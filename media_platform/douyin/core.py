@@ -134,7 +134,8 @@ class DouYinCrawler(AbstractCrawler):
             task = asyncio.create_task(
                 self.get_comments(aweme_id, semaphore, max_comments=config.MAX_COMMENTS_PER_POST), name=aweme_id)
             task_list.append(task)
-        await asyncio.wait(task_list)
+        if task_list is not None and len(task_list) > 0:
+            await asyncio.wait(task_list)
 
     async def get_comments(self, aweme_id: str, semaphore: asyncio.Semaphore, max_comments: int = None) -> None:
         async with semaphore:
